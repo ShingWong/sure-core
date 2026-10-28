@@ -1,0 +1,6 @@
+[toolchain]
+# CI pins an exact toolchain; local development tracks stable.
+channel = "stable"
+components = ["rustfmt", "clippy"]
+targets = ["wasm32-unknown-unknown", "wasm32-wasip2"]
+profile = "minimal"

@@ -1,0 +1,9 @@
+Content-Type: multipart/mixed; boundary=B
+
+--B
+Content-Type: text/plain
+
+before
+--Bxyz
+line2 --B
+--B--

@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = ["crates/sure-mime"]
+exclude = ["crates/sure-mime/fuzz"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.81"
+license = "MIT"
+authors = ["Sure Stack contributors"]
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"

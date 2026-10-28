@@ -1,0 +1,75 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown, wasm32-wasip2
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Format
+        run: |
+          cargo fmt --all --check
+          cargo fmt --manifest-path crates/sure-mime/fuzz/Cargo.toml -- --check
+
+      - name: Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Test (debug)
+        run: cargo test --all-features
+
+      - name: Test (release)
+        run: cargo test --release --all-features
+
+      - name: Documentation
+        run: cargo doc --no-deps --all-features
+
+      - name: wasm32-unknown-unknown
+        run: cargo check --target wasm32-unknown-unknown --no-default-features
+
+      - name: wasm32-wasip2
+        run: cargo check --target wasm32-wasip2 --no-default-features
+
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install supply-chain tools
+        run: |
+          cargo install --locked cargo-deny
+          cargo install --locked cargo-audit
+
+      - name: cargo-deny
+        run: cargo deny check licenses bans advisories sources
+
+      - name: cargo-audit
+        run: cargo audit
+
+      - name: SBOM
+        run: python3 scripts/sbom.py > sbom.cdx.json
+
+      - name: Dependency license report
+        run: python3 scripts/licenses.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.cdx.json

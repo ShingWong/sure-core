@@ -1,0 +1,15 @@
+Content-Type: multipart/mixed; boundary=outer
+
+--outer
+Content-Type: multipart/alternative; boundary=inner
+
+--inner
+Content-Type: text/plain
+
+plain
+--inner
+Content-Type: text/html
+
+<p>html</p>
+--inner--
+--outer--

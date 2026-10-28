@@ -1,0 +1,6 @@
+/target
+**/*.rs.bk
+/fuzz/target
+/crates/sure-mime/fuzz/target
+/crates/sure-mime/fuzz/corpus/**/crash-*
+/crates/sure-mime/fuzz/artifacts/
