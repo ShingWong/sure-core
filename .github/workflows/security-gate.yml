@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Commercial
+# Project lextelligent
+name: Security gate
+
+# Central gate: public structural rules from sure-ci-gate, private filter terms
+# from sure-master. Pinned by SHA so neither can change silently.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    uses: ShingWong/sure-ci-gate/.github/workflows/security-gate.yml@b78c0fdbaac95e7bde2bf0affb8e903565c7a446
+    with:
+      gate-ref: b78c0fdbaac95e7bde2bf0affb8e903565c7a446
+    secrets:
+      # Optional: without it, only the public structural rules run.
+      denylist-token: ${{ secrets.SURE_SECURITY_TOKEN }}

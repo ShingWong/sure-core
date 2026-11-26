@@ -77,5 +77,17 @@ authority: no filesystem, network, process, clock or environment access, and no
 - HTML sanitisation, URL filtering or malware scanning.
 - Multi-message archive semantics.
 
+## Repository leak gate
+
+Every push and PR runs the shared [`sure-ci-gate`](https://github.com/ShingWong/sure-ci-gate):
+public structural rules (keys, credentials, PII, IPs, host paths) plus a private
+term list fetched at CI time. Locally:
+
+```bash
+SURE_SCAN_ROOT=. node /path/to/sure-ci-gate/scripts/security-check.mjs
+```
+
+The filter terms are private; they are never stored in this repository.
+
 See [`docs/security-validation.md`](docs/security-validation.md) for the test
 matrix, commands and residual risks.

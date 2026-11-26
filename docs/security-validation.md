@@ -161,7 +161,7 @@ Validation found and fixed real issues rather than only confirming happy paths:
 
 ## 6. Commands run and results
 
-All commands were run from `/usr/local/devel/sure-core` with
+All commands were run from the repository root with
 `export PATH="$HOME/.cargo/bin:$PATH"`.
 
 | Command | Result |
